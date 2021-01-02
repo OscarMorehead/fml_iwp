@@ -35,18 +35,23 @@ public class AnimHandler : MonoBehaviour
 
     public Dropdown myDropdown;
 
+    private float playbackSpeed;
+
 
     // Start is called before the first frame update
     void Start()
     {
         LoadArrayNeutral();
+        myDropdown.value = 1;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-  
 
+        dropDowncheck();
+        HandleDropDown();
     }
     private void LateUpdate()
     {
@@ -109,7 +114,7 @@ public class AnimHandler : MonoBehaviour
     {
         for (int i = 0; i < anim.Length; i++)
         {
-            anim[i].SetFloat("Direction", -1);
+            anim[i].SetFloat("Direction", -playbackSpeed);
             anim[i].Play("all_anims", -1, float.NegativeInfinity);
         }
     }
@@ -118,7 +123,7 @@ public class AnimHandler : MonoBehaviour
     {
         for (int i = 0; i < anim.Length; i++)
         {
-            anim[i].SetFloat("Direction", 1);
+            anim[i].SetFloat("Direction", playbackSpeed);
             anim[i].Play("all_anims", 1, float.PositiveInfinity);
         }
     }
@@ -139,12 +144,38 @@ public class AnimHandler : MonoBehaviour
         {
             uiBtns[i].gameObject.SetActive(true);
             secondaryUiBtns[i].gameObject.SetActive(true);
+            myDropdown.gameObject.SetActive(true);
         }
         LoadArrayPos();
     }
 
+
     public void HandleDropDown()
     {
         //myDropdown.AddOptions(List<>)
+        myDropdown.onValueChanged.AddListener(delegate
+        {
+            selectvalue(myDropdown);
+        });
+    }
+    private void selectvalue(Dropdown dropdown)
+    {
+
+    }
+    public void dropDowncheck()
+    {
+
+        if (myDropdown.value == 0)
+        {
+            playbackSpeed = .1f;
+        }
+        else if(myDropdown.value == 1)
+        {
+            playbackSpeed = .7f;
+        }
+        else if(myDropdown.value == 2)
+        {
+            playbackSpeed = 1.5f;
+        }
     }
 }
