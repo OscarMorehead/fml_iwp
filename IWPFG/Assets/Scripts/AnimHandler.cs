@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.XR;
 
 
 //The class which handles time managemnet, such as fastforward, rewing, pause/play
 public class AnimHandler : MonoBehaviour
 {
+
 
     public bool isRewind = false;
     public bool isFastF = false;
@@ -23,63 +25,48 @@ public class AnimHandler : MonoBehaviour
 
     public Button playBtn;
     public Button pauseBtn;
+    public Button startScene;
 
     public MoveCar mC;
+
+    public Animator[] anim;
+    public Button[] uiBtns;
+    public GameObject[] secondaryUiBtns;
+
+    public Dropdown myDropdown;
 
 
     // Start is called before the first frame update
     void Start()
     {
- 
+        LoadArrayNeutral();
     }
 
     // Update is called once per frame
     void Update()
     {
-   
-      
+  
+
     }
     private void LateUpdate()
     {
-        if (isRewind)
-        {
-            pointerDown();
-        }
-        else 
-        {
-            pointerUp();
-           // mC.MoveObject();
 
-        }
     }
 
+   
 
     public void Record()
     {
         isRecording = true;
         pos2.Insert(0, carT[0].position);
         pos1.Insert(0, carT[1].position);
- 
+
     }
 
     public void Rewind()
     {
         isRewind = true;
-        if (pos2.Count > 0 && pos1.Count > 0){
-            carT[0].position = pos2[0];
-            carT[1].position = pos1[1];
-            pos2.RemoveAt(0);
-            pos1.RemoveAt(0);
-        }
-        else
-        {
-            StopRewind(); 
-        }
-        
-    }
-    public void StopRecord()
-    {
-        isRecording = false;
+        LoadArrayNeg();
     }
 
     public void StopRewind()
@@ -90,34 +77,74 @@ public class AnimHandler : MonoBehaviour
     public void FastF()
     {
         isFastF = true;
+        LoadArrayPos();
     }
     public void PauseScene()
     {
         isPause = true;
-        Time.timeScale = 0;
         pauseBtn.gameObject.SetActive(false);
         playBtn.gameObject.SetActive(true);
-        StopRecord();   
+        Time.timeScale = 0;
+
     }
     public void PlayScene()
     {
         isPlay = true;
-        Time.timeScale = 1;
         pauseBtn.gameObject.SetActive(true);
         playBtn.gameObject.SetActive(false);
+        Time.timeScale = 1;
     }
 
-    public void pointerDown()
+    public void PointerDown()
     {
         Rewind();
-        StopRecord();
         Debug.Log("pointer down");
     }
-    public void pointerUp()
+    public void PointerUp()
     {
-        Record();
-        StopRewind();
+        PauseScene();
         Debug.Log("pointer up");
     }
+    private void LoadArrayNeg()
+    {
+        for (int i = 0; i < anim.Length; i++)
+        {
+            anim[i].SetFloat("Direction", -1);
+            anim[i].Play("all_anims", -1, float.NegativeInfinity);
+        }
+    }
 
+    private void LoadArrayPos()
+    {
+        for (int i = 0; i < anim.Length; i++)
+        {
+            anim[i].SetFloat("Direction", 1);
+            anim[i].Play("all_anims", 1, float.PositiveInfinity);
+        }
+    }
+
+    private void LoadArrayNeutral()
+    {
+        for (int i = 0; i < anim.Length; i++)
+        {
+            anim[i].SetFloat("Direction", 0);
+            //anim[i].Play("all_anims", 0, 0);
+        }
+    }
+
+    public void HandleUi()
+    {
+        startScene.gameObject.SetActive(false);
+        for(int i = 0; i < uiBtns.Length; i++)
+        {
+            uiBtns[i].gameObject.SetActive(true);
+            secondaryUiBtns[i].gameObject.SetActive(true);
+        }
+        LoadArrayPos();
+    }
+
+    public void HandleDropDown()
+    {
+        //myDropdown.AddOptions(List<>)
+    }
 }
