@@ -57,7 +57,7 @@ public class AnimHandler : MonoBehaviour
         stashPosition = curCam.transform.position;
         rotation = curCam.transform.rotation;
         Time.timeScale = 0;
-
+        //LoadArrayPos(1f);
     }
 
     // Update is called once per frame
@@ -179,6 +179,8 @@ public class AnimHandler : MonoBehaviour
 
     public void HandleUi()
     {
+        Time.timeScale = 1;
+        LoadArrayPos(1f);
         startScene.gameObject.SetActive(false);
         uiBtns[1].gameObject.SetActive(true);
         for (int i = 0; i < uiBtns.Length; i++)
@@ -186,8 +188,6 @@ public class AnimHandler : MonoBehaviour
             secondaryUiBtns[i].gameObject.SetActive(true);
             myDropdown.gameObject.SetActive(true);
         }
-        PlayScene();
-        LoadArrayPos(1f);
         
     }
 
