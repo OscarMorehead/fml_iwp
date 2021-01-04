@@ -54,10 +54,10 @@ public class AnimHandler : MonoBehaviour
 
         myDropdown.value = 0;
         
-        stashPosition = curCam.transform.position;
-        rotation = curCam.transform.rotation;
+        //stashPosition = curCam.transform.position;
+        //rotation = curCam.transform.rotation;
         Time.timeScale = 0;
-
+        //LoadArrayPos(1f);
     }
 
     // Update is called once per frame
@@ -86,6 +86,7 @@ public class AnimHandler : MonoBehaviour
     {
         isRewind = true;
         LoadArrayNeg(2.9f);
+        secondaryUiBtns[1].gameObject.GetComponent<Image>().sprite = uiSprites[3];
         if (isPause)
         {
             PlayScene();
@@ -116,6 +117,7 @@ public class AnimHandler : MonoBehaviour
     {
         isFastF = true;
         LoadArrayPos(2.9f);
+        secondaryUiBtns[0].gameObject.GetComponent<Image>().sprite = uiSprites[1];
         if (isPause)
         {
             PlayScene();
@@ -179,6 +181,8 @@ public class AnimHandler : MonoBehaviour
 
     public void HandleUi()
     {
+        Time.timeScale = 1;
+        LoadArrayPos(1f);
         startScene.gameObject.SetActive(false);
         uiBtns[1].gameObject.SetActive(true);
         for (int i = 0; i < uiBtns.Length; i++)
@@ -186,8 +190,6 @@ public class AnimHandler : MonoBehaviour
             secondaryUiBtns[i].gameObject.SetActive(true);
             myDropdown.gameObject.SetActive(true);
         }
-        PlayScene();
-        LoadArrayPos(1f);
         
     }
 
@@ -209,8 +211,8 @@ public class AnimHandler : MonoBehaviour
 
         if (myDropdown.value == 0)
         {
-            curCam.transform.position = stashPosition;
-            curCam.transform.rotation = rotation;
+            //curCam.transform.position = stashPosition;
+            //curCam.transform.rotation = rotation;
         }
         else if(myDropdown.value == 1)
         {
