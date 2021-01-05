@@ -38,6 +38,7 @@ public class AnimHandler : MonoBehaviour
 
     private float playbackSpeed;
 
+    public GameObject origCam;
     public GameObject curCam;
     public GameObject carCam;
     public GameObject vanCam;
@@ -47,17 +48,16 @@ public class AnimHandler : MonoBehaviour
     private Vector3 stashPosition;
     private Quaternion rotation;
 
-
     // Start is called before the first frame update
     void Start()
     {
 
         myDropdown.value = 0;
         
-        //stashPosition = curCam.transform.position;
-        //rotation = curCam.transform.rotation;
-        Time.timeScale = 0;
-        //LoadArrayPos(1f);
+        stashPosition = origCam.transform.position;
+        rotation = origCam.transform.rotation;
+        //Time.timeScale = 0;
+        LoadArrayPos(1f);
     }
 
     // Update is called once per frame
@@ -139,7 +139,7 @@ public class AnimHandler : MonoBehaviour
         isPause = false;
         pauseBtn.gameObject.SetActive(true);
         playBtn.gameObject.SetActive(false);
-        Time.timeScale = 1;
+        Time.timeScale = .5f;
     }
 
     public void PointerDown()
@@ -213,17 +213,20 @@ public class AnimHandler : MonoBehaviour
         {
             //curCam.transform.position = stashPosition;
             //curCam.transform.rotation = rotation;
+     
         }
         else if(myDropdown.value == 1)
         {
             
             curCam.transform.position = carCam.transform.position;
             curCam.transform.rotation = carCam.transform.rotation;
+        
         }
         else if(myDropdown.value == 2)
         {
             curCam.transform.position = vanCam.transform.position;
             curCam.transform.rotation = vanCam.transform.rotation;
+        
         }
     }
 }
