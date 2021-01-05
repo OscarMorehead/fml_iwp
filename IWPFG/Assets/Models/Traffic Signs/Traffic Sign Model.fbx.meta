@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6ff2bc1df1b49a848a04dfca47642bab
+guid: cce3b3d3b7d6a6340a68cf89130e4349
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable: []
@@ -7,8 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Tree Material
-    second: {fileID: 2100000, guid: b2fbb43b47e5a4c429b38cdf32355bd8, type: 2}
+      name: Traffic Sign Material
+    second: {fileID: 2100000, guid: 6158ac750f052f944a6f483ffce19a5c, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
@@ -48,7 +48,7 @@ ModelImporter:
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
-    fileIdsGeneration: 1
+    fileIdsGeneration: 2
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
