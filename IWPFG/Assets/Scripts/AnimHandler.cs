@@ -27,6 +27,7 @@ public class AnimHandler : MonoBehaviour
     public Button playBtn;
     public Button pauseBtn;
     public GameObject startScene;
+    public GameObject slider;
 
     public MoveCar mC;
 
@@ -45,7 +46,7 @@ public class AnimHandler : MonoBehaviour
 
     public Sprite[] uiSprites; //0 = ffInact, 1 = ffAct, 2 = rwInact, 3 = rwAct
 
-    private Vector3 stashPosition;
+    private GameObject stashPosition;
     private Quaternion rotation;
 
     // Start is called before the first frame update
@@ -54,18 +55,32 @@ public class AnimHandler : MonoBehaviour
 
         myDropdown.value = 0;
         
-        stashPosition = origCam.transform.position;
-        rotation = origCam.transform.rotation;
-        //Time.timeScale = 0;
-        LoadArrayPos(1f);
+        //stashPosition = origCam.transform.position;
+       // rotation = origCam.transform.rotation;
+        Time.timeScale = 0;
+         //LoadArrayPos(1f);
+
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        dropDowncheck();
+       // dropDowncheck();
         HandleDropDown();
+        if (myDropdown.value == 1)
+        {
+
+            curCam.transform.position = carCam.transform.position;
+            curCam.transform.rotation = carCam.transform.rotation;
+
+        }
+        else if (myDropdown.value == 2)
+        {
+            curCam.transform.position = vanCam.transform.position;
+            curCam.transform.rotation = vanCam.transform.rotation;
+
+        }
     }
     private void LateUpdate()
     {
@@ -84,45 +99,51 @@ public class AnimHandler : MonoBehaviour
 
     public void Rewind()
     {
-        isRewind = true;
-        LoadArrayNeg(2.9f);
         secondaryUiBtns[1].gameObject.GetComponent<Image>().sprite = uiSprites[3];
+        LoadArrayNeg(3.5f);
         if (isPause)
         {
-            PlayScene();
+            Time.timeScale = .9f;
             wasPaused = true;
         }
+      
     }
     public void StopRewind()
     {
-        isRewind = false;
-        LoadArrayPos(1f);
         secondaryUiBtns[1].gameObject.GetComponent<Image>().sprite = uiSprites[2];
-        if (wasPaused)
+        LoadArrayPos(1f);
+        if (wasPaused && !isPlay)
         {
             PauseScene();
+        }
+        else
+        {
+            PlayScene();
         }
     }
     public void StopFf()
     {
-        isRewind = false;
-        LoadArrayPos(1f);
         secondaryUiBtns[0].gameObject.GetComponent<Image>().sprite = uiSprites[0];
-        if (wasPaused)
+        LoadArrayPos(1f);
+        if (wasPaused && !isPlay)
         {
             PauseScene();
+        }
+        else
+        {
+            PlayScene();
         }
     }
     public void FastF()
     {
-        isFastF = true;
-        LoadArrayPos(2.9f);
         secondaryUiBtns[0].gameObject.GetComponent<Image>().sprite = uiSprites[1];
+        LoadArrayPos(3.5f);
         if (isPause)
         {
-            PlayScene();
+            Time.timeScale = .9f;
             wasPaused = true;
         }
+     
     }
     public void PauseScene()
     {
@@ -139,7 +160,7 @@ public class AnimHandler : MonoBehaviour
         isPause = false;
         pauseBtn.gameObject.SetActive(true);
         playBtn.gameObject.SetActive(false);
-        Time.timeScale = .5f;
+        Time.timeScale = .9f;
     }
 
     public void PointerDown()
@@ -181,16 +202,28 @@ public class AnimHandler : MonoBehaviour
 
     public void HandleUi()
     {
-        Time.timeScale = 1;
-        LoadArrayPos(1f);
+        myDropdown.gameObject.SetActive(true);
         startScene.gameObject.SetActive(false);
         uiBtns[1].gameObject.SetActive(true);
+        slider.gameObject.SetActive(true);
         for (int i = 0; i < uiBtns.Length; i++)
         {
             secondaryUiBtns[i].gameObject.SetActive(true);
             myDropdown.gameObject.SetActive(true);
         }
-        
+        Time.timeScale = .9f;
+        LoadArrayPos(1f);  
+    }
+    public void HideUi()
+    {
+        myDropdown.gameObject.SetActive(false);
+        startScene.gameObject.SetActive(false);
+        slider.gameObject.SetActive(false);
+        for (int i = 0; i < uiBtns.Length; i++)
+        {
+            secondaryUiBtns[i].gameObject.SetActive(false);
+            uiBtns[1].gameObject.SetActive(false);
+        }
     }
 
 
@@ -200,6 +233,7 @@ public class AnimHandler : MonoBehaviour
         myDropdown.onValueChanged.AddListener(delegate
         {
             selectvalue(myDropdown);
+            //dropDowncheck();
         });
     }
     private void selectvalue(Dropdown dropdown)
@@ -211,11 +245,12 @@ public class AnimHandler : MonoBehaviour
 
         if (myDropdown.value == 0)
         {
-            //curCam.transform.position = stashPosition;
-            //curCam.transform.rotation = rotation;
+            curCam.transform.position = origCam.transform.position;
+           // curCam.transform.position = new Vector3(-96f, 420f, -47f);
+            curCam.transform.rotation = origCam.transform.rotation;
      
         }
-        else if(myDropdown.value == 1)
+        if(myDropdown.value == 1)
         {
             
             curCam.transform.position = carCam.transform.position;
